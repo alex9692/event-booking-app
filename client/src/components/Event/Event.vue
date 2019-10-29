@@ -9,7 +9,7 @@
 				<div v-if="userId === event.user.id">
 					<span>
 						You are owner of this event.
-						<b-button variant="outline-primary" class="py-1 px-3">
+						<b-button variant="outline-primary" class="py-1 px-3" @click="updateEvent">
 							Edit
 							<v-icon name="edit" class="mb-2 edit-icon"></v-icon>
 						</b-button>
@@ -36,6 +36,10 @@
 			showDetails() {
 				this.$store.dispatch("initSetSelectedEvent", this.event);
 				this.$bvModal.show("bv-modal-show-details");
+			},
+			updateEvent() {
+				this.$store.dispatch("initSetSelectedEvent", this.event);
+				this.$bvModal.show("bv-modal-update-event");
 			}
 		}
 	};

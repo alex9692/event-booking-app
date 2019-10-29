@@ -12,6 +12,7 @@
 		<app-event-details :events="events" :loading="loading"></app-event-details>
 		<app-selected-event-modal :selectedEvent="selectedEvent" :isAuth="isAuth"></app-selected-event-modal>
 		<app-create-event-modal></app-create-event-modal>
+		<app-update-event-modal></app-update-event-modal>
 	</div>
 </template>
 
@@ -19,6 +20,7 @@
 	import EventDetails from "../components/Event/EventDetails/EventDetails";
 	import SelectedEventModal from "../components/Event/SelectedEventModal/SelectedEventModal";
 	import CreateEventModal from "../components/Event/CreateEventModal/CreateEventModal";
+	import UpdateEventModal from "../components/Event/UpdateEventModal/UpdateEventModal";
 
 	import { mapState } from "vuex";
 
@@ -26,7 +28,8 @@
 		components: {
 			"app-event-details": EventDetails,
 			"app-selected-event-modal": SelectedEventModal,
-			"app-create-event-modal": CreateEventModal
+			"app-create-event-modal": CreateEventModal,
+			"app-update-event-modal": UpdateEventModal
 		},
 		computed: {
 			...mapState(["isAuth", "events", "selectedEvent", "loading"])
