@@ -16,6 +16,7 @@ export default new Vuex.Store({
 		userId: null,
 		tokenExp: null,
 		loading: false,
+		selectedEvent: null,
 		events: [],
 		bookings: []
 	},
@@ -44,6 +45,9 @@ export default new Vuex.Store({
 			state.bookings = state.bookings.filter(booking => {
 				return booking.id !== payload;
 			});
+		},
+		setSelectedEvent: (state, payload) => {
+			state.selectedEvent = payload;
 		}
 	},
 	actions: {
@@ -119,7 +123,6 @@ export default new Vuex.Store({
 						proxy.writeQuery({ query: queries.FETCH_EVENTS_QUERY, data });
 					}
 				});
-				console.log(state.events);
 				commit("updateEvents", response.data.createEvent);
 			} catch (error) {
 				console.log(error.networkError.result);
@@ -221,6 +224,12 @@ export default new Vuex.Store({
 				state.loading = false;
 				console.log(err);
 			}
+		},
+		initSetSelectedEvent: ({ commit }, payload) => {
+			commit("setSelectedEvent", payload);
+		},
+		initUnsetSelectedEvent: ({ commit }) => {
+			commit("setSelectedEvent", null);
 		}
 	},
 	modules: {},

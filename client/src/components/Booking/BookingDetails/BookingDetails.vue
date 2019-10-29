@@ -10,12 +10,12 @@
 </template>
 
 <script>
-	import Booking from "../Booking/Booking";
+	import Booking from "../Booking";
 
 	export default {
 		components: {
 			"app-booking": Booking
 		},
-		props: ['bookings']
+		props: ["bookings"]
 	};
 </script>

@@ -7,11 +7,7 @@
 			</div>
 			<small>
 				<p v-if="userId === event.user.id">You are owner of this event.</p>
-				<b-button
-					v-if="userId !== event.user.id"
-					variant="primary"
-					@click="showDetails(event)"
-				>View Details</b-button>
+				<b-button v-if="userId !== event.user.id" variant="primary" @click="showDetails">View Details</b-button>
 			</small>
 		</div>
 	</b-card>
@@ -29,8 +25,9 @@
 			formattedDate(date) {
 				return new Date(date).toLocaleDateString("en-US");
 			},
-			showDetails(data) {
-				this.$emit("showDetails", data);
+			showDetails() {
+				this.$store.dispatch("initSetSelectedEvent", this.event);
+				this.$bvModal.show("bv-modal-show-details");
 			}
 		}
 	};

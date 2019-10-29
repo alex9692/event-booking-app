@@ -23,9 +23,9 @@
 
 <script>
 	import { mapState } from "vuex";
-	import BookingDetails from "../components/BookingDetails/BookingDetails";
-	import BookingChart from "../components/BookingChart/BookingChart";
-	import BookingControls from "../components/BookingControls/BookingControls";
+	import BookingDetails from "../components/Booking/BookingDetails/BookingDetails";
+	import BookingChart from "../components/Booking/BookingChart/BookingChart";
+	import BookingControls from "../components/Booking/BookingControls/BookingControls";
 
 	export default {
 		components: {
