@@ -6,10 +6,9 @@
 					<b-card-text class="mt-5 mb-3">Share your own events!</b-card-text>
 					<b-button variant="primary" id="show-btn" @click="showCreateEventModal">Create Event</b-button>
 				</b-card>
-				<hr />
 			</b-col>
 		</b-row>
-
+		<hr />
 		<app-event-details :events="events" :loading="loading"></app-event-details>
 		<app-selected-event-modal :selectedEvent="selectedEvent" :isAuth="isAuth"></app-selected-event-modal>
 		<app-create-event-modal></app-create-event-modal>

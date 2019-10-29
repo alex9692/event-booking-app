@@ -37,7 +37,7 @@
 							maxBarThickness: 12,
 							minBarLength: 2,
 							backgroundColor: "#007bff",
-							hoverBackgroundColor: "#438edd",
+							hoverBackgroundColor: "#0069d9",
 							data: [...this.val, 0]
 						}
 					]
