@@ -5,9 +5,11 @@ export const auth = {
 		createEvent: authMiddleware,
 		bookEvent: authMiddleware,
 		cancelBooking: authMiddleware,
-		updateEvent: authMiddleware
+		updateEvent: authMiddleware,
+		updateUser: authMiddleware
 	},
 	Query: {
+		user: authMiddleware,
 		bookings: authMiddleware
 	}
 };

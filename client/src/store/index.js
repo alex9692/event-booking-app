@@ -13,7 +13,9 @@ export default new Vuex.Store({
 	state: {
 		isAuth: false,
 		token: null,
+		user: null,
 		userId: null,
+		userName: "",
 		tokenExp: null,
 		loading: false,
 		updateLoading: false,
@@ -22,10 +24,11 @@ export default new Vuex.Store({
 		bookings: []
 	},
 	mutations: {
-		setTokenAndUserId: (state, { token, userId, tokenExp }) => {
+		setTokenAndUser: (state, { token, userId, tokenExp, userName }) => {
 			state.token = token;
 			state.tokenExp = tokenExp;
 			state.userId = userId;
+			state.userName = userName;
 		},
 		setIsAuth: (state, payload) => {
 			state.isAuth = payload;
@@ -53,6 +56,15 @@ export default new Vuex.Store({
 		updateSelectedEvent: (state, payload) => {
 			const old = state.events.find(event => event.id === payload.id);
 			Object.assign(old, payload);
+		},
+		setUser: (state, payload) => {
+			state.user = payload;
+		},
+		updateUser: (state, payload) => {
+			Object.assign(state.user, payload);
+			if (payload.email) {
+				state.userName = payload.email.split("@")[0];
+			}
 		}
 	},
 	actions: {
@@ -66,7 +78,7 @@ export default new Vuex.Store({
 					query: queries.LOGIN_USER_QUERY,
 					variables
 				});
-				commit("setTokenAndUserId", response.data.login);
+				commit("setTokenAndUser", response.data.login);
 				commit("setIsAuth", true);
 				router.push("/events");
 			} catch (error) {
@@ -86,17 +98,19 @@ export default new Vuex.Store({
 					variables
 				});
 			} catch (error) {
-				console.log(error);
+				console.log(error.networkError.result);
 			}
 		},
 		signout: async ({ commit }) => {
-			commit("setTokenAndUserId", {
+			commit("setTokenAndUser", {
 				token: null,
 				userId: null,
-				tokenExp: null
+				tokenExp: null,
+				userName: ""
 			});
 			commit("setIsAuth", false);
 			commit("setBookings", []);
+			commit("setUser", null);
 			apolloClient.resetStore();
 			router.push("/auth");
 		},
@@ -129,7 +143,7 @@ export default new Vuex.Store({
 				});
 				commit("updateEvents", response.data.createEvent);
 			} catch (error) {
-				console.log(error);
+				console.log(error.networkError.result);
 			}
 		},
 		fetchEvents: async ({ commit, state }) => {
@@ -142,7 +156,7 @@ export default new Vuex.Store({
 				commit("setEvents", response.data.events);
 			} catch (error) {
 				state.loading = false;
-				console.log(error);
+				console.log(error.networkError.result);
 			}
 		},
 		bookAnEvent: async ({ commit, state }, { eventId }) => {
@@ -168,13 +182,13 @@ export default new Vuex.Store({
 							data.bookings.push(bookEvent);
 							proxy.writeQuery({ query: queries.FETCH_BOOKINGS_QUERY, data });
 						} catch (error) {
-							console.log(error);
+							console.log(error.networkError.result);
 						}
 					}
 				});
 				commit("updateBookings", response.data.bookEvent);
 			} catch (error) {
-				console.log(error);
+				console.log(error.networkError.result);
 			}
 		},
 		fetchBookings: async ({ commit, state }) => {
@@ -192,7 +206,7 @@ export default new Vuex.Store({
 				commit("setBookings", response.data.bookings);
 			} catch (error) {
 				state.loading = false;
-				console.log(error);
+				console.log(error.networkError.result);
 			}
 		},
 		cancelBooking: async ({ commit, state }, { bookingId }) => {
@@ -226,7 +240,7 @@ export default new Vuex.Store({
 				commit("deleteBooking", bookingId);
 			} catch (error) {
 				state.loading = false;
-				console.log(error);
+				console.log(error.networkError.result);
 			}
 		},
 		initSetSelectedEvent: ({ commit }, payload) => {
@@ -265,9 +279,54 @@ export default new Vuex.Store({
 				});
 				state.updateLoading = false;
 				commit("updateSelectedEvent", response.data.updateEvent);
+				commit("setSelectedEvent", null);
 			} catch (error) {
 				state.updateLoading = false;
-				console.log(error);
+				console.log(error.networkError.result);
+			}
+		},
+		getUserDetails: async ({ commit, state }) => {
+			try {
+				const response = await apolloClient.query({
+					query: queries.FETCH_USER_QUERY,
+					context: {
+						headers: {
+							Authorization: `Bearer ${state.token}`
+						}
+					}
+				});
+
+				commit("setUser", response.data.user);
+			} catch (error) {
+				console.log(error.networkError.result);
+			}
+		},
+		updateUserDetails: async ({ commit, state }, payload) => {
+			const variables = {
+				data: { ...payload }
+			};
+
+			try {
+				state.loading = true;
+				const response = await apolloClient.mutate({
+					mutation: mutations.UPDATE_USER_MUTATION,
+					variables,
+					context: {
+						headers: {
+							Authorization: `Bearer ${state.token}`
+						}
+					},
+					update: (proxy, { data: { updateUser } }) => {
+						const data = proxy.readQuery({ query: queries.FETCH_USER_QUERY });
+						Object.assign(data.user, updateUser);
+						proxy.writeQuery({ query: queries.FETCH_USER_QUERY, data });
+					}
+				});
+				state.loading = false;
+				commit("updateUser", response.data.updateUser);
+			} catch (error) {
+				state.loading = false;
+				console.log(error.networkError.result);
 			}
 		}
 	},

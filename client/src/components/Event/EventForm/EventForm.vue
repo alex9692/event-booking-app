@@ -86,12 +86,6 @@
 			hideCreateEventModal() {
 				this.$bvModal.hide(this.modalId);
 			}
-		},
-		created() {
-			console.log("created");
-		},
-		mounted() {
-			console.log("mounted");
 		}
 	};
 </script>

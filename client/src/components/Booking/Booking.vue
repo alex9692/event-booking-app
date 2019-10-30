@@ -33,8 +33,7 @@
 		width: 1.5rem;
 		cursor: pointer;
 		color: #007bff;
-		transition: color 200ms;
-		transition: transform 200ms;
+		transition: all 200ms;
 	}
 	.btn:hover .delete-icon {
 		color: #0069d9;

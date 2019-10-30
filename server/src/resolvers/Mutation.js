@@ -131,5 +131,26 @@ export const Mutation = {
 			},
 			info
 		);
+	},
+	async updateUser(parent, args, { prisma, request }, info) {
+		const { userId } = request;
+
+		if (args.data.password) {
+			args.data.password = await bcrypt.hash(args.data.password, 12);
+		}
+		const userExist = await prisma.exists.User({ id: userId });
+		if (!userExist) {
+			return response
+				.status(404)
+				.json({ status: "fail", message: "user not found" });
+		}
+
+		return prisma.mutation.updateUser(
+			{
+				where: { id: userId },
+				data: args.data
+			},
+			info
+		);
 	}
 };
