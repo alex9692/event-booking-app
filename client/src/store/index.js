@@ -70,7 +70,7 @@ export default new Vuex.Store({
 				commit("setIsAuth", true);
 				router.push("/events");
 			} catch (error) {
-				console.log(error);
+				console.log(error.networkError.result);
 			}
 		},
 		signUp: async (context, payload) => {

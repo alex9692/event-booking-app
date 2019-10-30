@@ -9,7 +9,7 @@
 			</b-col>
 		</b-row>
 		<hr />
-		<app-event-details :events="events" :loading="loading"></app-event-details>
+		<app-event-details :events="events" :loading="loading" :isAuth="isAuth"></app-event-details>
 		<app-selected-event-modal :selectedEvent="selectedEvent" :isAuth="isAuth"></app-selected-event-modal>
 		<app-create-event-modal></app-create-event-modal>
 		<app-update-event-modal></app-update-event-modal>
@@ -22,7 +22,7 @@
 	import CreateEventModal from "../components/Event/CreateEventModal/CreateEventModal";
 	import UpdateEventModal from "../components/Event/UpdateEventModal/UpdateEventModal";
 
-	import { mapState,mapGetters } from "vuex";
+	import { mapState } from "vuex";
 
 	export default {
 		components: {
@@ -32,8 +32,7 @@
 			"app-update-event-modal": UpdateEventModal
 		},
 		computed: {
-			...mapState(["isAuth", "events", "selectedEvent", "loading"]),
-			...mapGetters(['updatedEvents'])
+			...mapState(["isAuth", "events", "selectedEvent", "loading"])
 		},
 		methods: {
 			showCreateEventModal() {

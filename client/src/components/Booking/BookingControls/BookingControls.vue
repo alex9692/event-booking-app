@@ -1,9 +1,9 @@
 <template>
 	<div>
 		<b-nav tabs align="center">
-			<b-nav-item @click="toggleBookingDetails(true)" :active="showBookingDetails">My Bookings</b-nav-item>
+			<b-nav-item @click="showDetails(true)" :active="showBookingDetails">My Bookings</b-nav-item>
 			<b-nav-item
-				@click="toggleBookingDetails(false)"
+				@click="showDetails(false)"
 				:active="!showBookingDetails"
 			>Booking Expenditure Chart</b-nav-item>
 		</b-nav>
@@ -14,7 +14,7 @@
 	export default {
 		props: ["showBookingDetails"],
 		methods: {
-			toggleBookingDetails(data) {
+			showDetails(data) {
 				this.$emit("toggleBookingDetails", data);
 			}
 		}
