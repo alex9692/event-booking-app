@@ -8,11 +8,15 @@ export const Query = {
 	users(parent, args, { prisma }, info) {
 		return prisma.query.users(null, info);
 	},
-	async bookings(parent, args, { prisma, request }, info) {
+	async bookings(parent, args, { prisma, request, response }, info) {
 		const { userId } = request;
 
 		const userExists = await prisma.exists.User({ id: userId });
-		if (!userExists) throw new Error("user doesn't exists");
+		if (!userExists) {
+			return response
+				.status(404)
+				.json({ status: "fail", message: "user doesn't exist." });
+		}
 
 		return prisma.query.bookings(
 			{
@@ -25,12 +29,15 @@ export const Query = {
 			info
 		);
 	},
-	async login(parent, args, { prisma }, info) {
+	async login(parent, args, { prisma, response }, info) {
 		const { email, password } = args;
 
 		const user = await prisma.query.user({ where: { email } }, "{id password}");
-		if (!user || !(await bcrypt.compare(password, user.password)))
-			throw new Error("incorrect email or password");
+		if (!user || !(await bcrypt.compare(password, user.password))) {
+			return response
+				.status(404)
+				.json({ status: "fail", message: "incorrect email or password." });
+		}
 
 		const token = jwt.sign(
 			{

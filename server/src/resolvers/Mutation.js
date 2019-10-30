@@ -1,11 +1,15 @@
 import bcrypt from "bcryptjs";
 
 export const Mutation = {
-	async createEvent(parent, args, { prisma, request }, info) {
+	async createEvent(parent, args, { prisma, request, response }, info) {
 		const { data } = args;
 		const { userId } = request;
 		const userExist = await prisma.exists.User({ id: userId });
-		if (!userExist) throw new Error("user doesn't exist");
+		if (!userExist) {
+			return response
+				.status(404)
+				.json({ status: "fail", message: "user doesn't exist." });
+		}
 
 		return prisma.mutation.createEvent(
 			{
@@ -29,7 +33,7 @@ export const Mutation = {
 		if (userExist) {
 			return response
 				.status(400)
-				.json({ status: "fail", message: "user already exists." });
+				.json({ status: "fail", message: "user already exist." });
 		}
 
 		const hashPassword = await bcrypt.hash(password, 12);
@@ -44,14 +48,16 @@ export const Mutation = {
 			info
 		);
 	},
-	async bookEvent(parent, args, { prisma, request }, info) {
+	async bookEvent(parent, args, { prisma, request, response }, info) {
 		const { eventId } = args.data;
 		const { userId } = request;
 
 		const eventExist = await prisma.exists.Event({ id: eventId });
 		const userExist = await prisma.exists.User({ id: userId });
 		if (!eventExist || !userExist) {
-			throw new Error("user or post doesn't exist");
+			return response
+				.status(404)
+				.json({ status: "fail", message: "user or post doesn't exist." });
 		}
 		return prisma.mutation.createBooking(
 			{
@@ -71,21 +77,31 @@ export const Mutation = {
 			info
 		);
 	},
-	async cancelBooking(parent, args, { prisma, request }, info) {
+	async cancelBooking(parent, args, { prisma, request, response }, info) {
 		const { bookId } = args;
 		const { userId } = request;
 
 		const user = await prisma.exists.User({ id: userId });
-		if (!user) throw new Error("user doesn't exist");
-
 		const bookingExist = await prisma.exists.Booking({ id: bookId });
-		if (!bookingExist) throw new Error("booking doesn't exist");
+		if (!user || !bookingExist) {
+			return response
+				.status(404)
+				.json({ status: "fail", message: "user or booking doesn't exist." });
+		}
 
 		return prisma.mutation.deleteBooking({ where: { id: bookId } }, info);
 	},
-	async updateEvent(parent, args, { prisma, request }, info) {
+	async updateEvent(parent, args, { prisma, request, response }, info) {
 		const { eventId, data } = args;
 		const { userId } = request;
+
+		const eventExist = await prisma.exists.Event({ id: eventId });
+		const userExist = await prisma.exists.User({ id: userId });
+		if (!eventExist || !userExist) {
+			return response
+				.status(404)
+				.json({ status: "fail", message: "user or post doesn't exist." });
+		}
 
 		const userPost = await prisma.query.events(
 			{
@@ -103,7 +119,9 @@ export const Mutation = {
 			"{ id }"
 		);
 		if (userPost.length === 0) {
-			throw new Error("you can only edit your own events");
+			return response
+				.status(403)
+				.json({ status: "fail", message: "you can only edit your own events" });
 		}
 
 		return prisma.mutation.updateEvent(
