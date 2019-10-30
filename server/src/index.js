@@ -29,5 +29,5 @@ const options = {
 };
 
 server.start(options, () => {
-	console.log(`server is up: ${options.port}`);
+	console.log(`Server is running on PORT:${options.port}`);
 });

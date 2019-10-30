@@ -53,6 +53,7 @@
 		background-color: #fff;
 		border-radius: 5px;
 		color: #007bff !important;
+		transition: all 200ms !important;
 	}
 
 	.user-check-icon-container {

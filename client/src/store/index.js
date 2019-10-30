@@ -82,7 +82,7 @@ export default new Vuex.Store({
 				commit("setIsAuth", true);
 				router.push("/events");
 			} catch (error) {
-				console.log(error.networkError.result);
+				console.log(error);
 			}
 		},
 		signUp: async (context, payload) => {
@@ -98,7 +98,7 @@ export default new Vuex.Store({
 					variables
 				});
 			} catch (error) {
-				console.log(error.networkError.result);
+				console.log(error);
 			}
 		},
 		signout: async ({ commit }) => {
@@ -143,7 +143,7 @@ export default new Vuex.Store({
 				});
 				commit("updateEvents", response.data.createEvent);
 			} catch (error) {
-				console.log(error.networkError.result);
+				console.log(error);
 			}
 		},
 		fetchEvents: async ({ commit, state }) => {
@@ -156,7 +156,7 @@ export default new Vuex.Store({
 				commit("setEvents", response.data.events);
 			} catch (error) {
 				state.loading = false;
-				console.log(error.networkError.result);
+				console.log(error);
 			}
 		},
 		bookAnEvent: async ({ commit, state }, { eventId }) => {
@@ -182,13 +182,13 @@ export default new Vuex.Store({
 							data.bookings.push(bookEvent);
 							proxy.writeQuery({ query: queries.FETCH_BOOKINGS_QUERY, data });
 						} catch (error) {
-							console.log(error.networkError.result);
+							console.log(error);
 						}
 					}
 				});
 				commit("updateBookings", response.data.bookEvent);
 			} catch (error) {
-				console.log(error.networkError.result);
+				console.log(error);
 			}
 		},
 		fetchBookings: async ({ commit, state }) => {
@@ -206,7 +206,7 @@ export default new Vuex.Store({
 				commit("setBookings", response.data.bookings);
 			} catch (error) {
 				state.loading = false;
-				console.log(error.networkError.result);
+				console.log(error);
 			}
 		},
 		cancelBooking: async ({ commit, state }, { bookingId }) => {
@@ -240,7 +240,7 @@ export default new Vuex.Store({
 				commit("deleteBooking", bookingId);
 			} catch (error) {
 				state.loading = false;
-				console.log(error.networkError.result);
+				console.log(error);
 			}
 		},
 		initSetSelectedEvent: ({ commit }, payload) => {
@@ -282,7 +282,7 @@ export default new Vuex.Store({
 				commit("setSelectedEvent", null);
 			} catch (error) {
 				state.updateLoading = false;
-				console.log(error.networkError.result);
+				console.log(error);
 			}
 		},
 		getUserDetails: async ({ commit, state }) => {
@@ -298,7 +298,7 @@ export default new Vuex.Store({
 
 				commit("setUser", response.data.user);
 			} catch (error) {
-				console.log(error.networkError.result);
+				console.log(error);
 			}
 		},
 		updateUserDetails: async ({ commit, state }, payload) => {
@@ -326,14 +326,10 @@ export default new Vuex.Store({
 				commit("updateUser", response.data.updateUser);
 			} catch (error) {
 				state.loading = false;
-				console.log(error.networkError.result);
+				console.log(error);
 			}
 		}
 	},
 	modules: {},
-	getters: {
-		updatedEvents: state => {
-			return state.events.map(el => el);
-		}
-	}
+	getters: {}
 });
