@@ -51,16 +51,47 @@
 						price: +this.price,
 						date: this.date
 					});
+					this.$bvModal.hide(this.modalId);
+					this.title = "";
+					this.description = "";
+					this.price = "";
+					this.date = "";
+				} else {
+					const formData = {
+						title: this.title,
+						price: +this.price,
+						date: this.date,
+						description: this.description
+					};
+					const updates = {};
+					Object.keys(formData).forEach(key => {
+						if (key === "date") {
+							this.selectedEvent[key] = this.selectedEvent[key].split(
+								"T"
+							)[0];
+						}
+						if (formData[key] !== this.selectedEvent[key]) {
+							updates[key] = formData[key];
+						}
+					});
+					if (Object.keys(updates).length !== 0) {
+						await this.$store.dispatch("updateEvent", {
+							updatedData: updates,
+							eventId: this.selectedEvent.id
+						});
+						this.$bvModal.hide(this.modalId);
+					}
 				}
-				this.$bvModal.hide(this.modalId);
-				this.title = "";
-				this.description = "";
-				this.price = "";
-				this.date = "";
 			},
 			hideCreateEventModal() {
 				this.$bvModal.hide(this.modalId);
 			}
+		},
+		created() {
+			console.log("created");
+		},
+		mounted() {
+			console.log("mounted");
 		}
 	};
 </script>

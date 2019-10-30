@@ -7,7 +7,10 @@
 			</div>
 			<small class="mt-2">
 				<div v-if="userId === event.user.id">
-					<span>
+					<span v-if="updateLoading && selectedEvent.id === event.id" >
+						<b-spinner variant="primary" label="Spinning"></b-spinner>
+					</span>
+					<span v-else>
 						You are owner of this event.
 						<b-button variant="outline-primary" class="py-1 px-3" @click="updateEvent">
 							Edit
@@ -27,7 +30,7 @@
 	export default {
 		props: ["event"],
 		computed: {
-			...mapState(["userId"])
+			...mapState(["userId", "updateLoading", "selectedEvent"])
 		},
 		methods: {
 			formattedDate(date) {

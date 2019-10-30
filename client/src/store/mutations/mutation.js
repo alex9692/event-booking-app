@@ -56,3 +56,19 @@ export const CANCEL_BOOKING_MUTATION = gql`
 		}
 	}
 `;
+
+export const UPDATE_EVENT_MUTATION = gql`
+	mutation($eventId: ID!, $data: UpdateEventInput!) {
+		updateEvent(eventId: $eventId, data: $data) {
+			id
+			title
+			price
+			date
+			description
+			user {
+				id
+				email
+			}
+		}
+	}
+`;

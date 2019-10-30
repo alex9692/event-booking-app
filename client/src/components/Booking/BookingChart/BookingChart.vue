@@ -1,6 +1,11 @@
 <template>
 	<div>
-		<app-chart :data="chartData" :options="options" :width="500" :height="500"></app-chart>
+		<div v-if="bookings.length!==0">
+			<app-chart :data="chartData" :options="options" :width="500" :height="500"></app-chart>
+		</div>
+		<div v-else>
+			<h1 class="display-4 text-center">Please Book Events first!</h1>
+		</div>
 	</div>
 </template>
 

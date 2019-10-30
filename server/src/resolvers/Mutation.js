@@ -6,7 +6,7 @@ export const Mutation = {
 		const { userId } = request;
 		const userExist = await prisma.exists.User({ id: userId });
 		if (!userExist) throw new Error("user doesn't exist");
-		
+
 		return prisma.mutation.createEvent(
 			{
 				data: {
@@ -82,5 +82,36 @@ export const Mutation = {
 		if (!bookingExist) throw new Error("booking doesn't exist");
 
 		return prisma.mutation.deleteBooking({ where: { id: bookId } }, info);
+	},
+	async updateEvent(parent, args, { prisma, request }, info) {
+		const { eventId, data } = args;
+		const { userId } = request;
+
+		const userPost = await prisma.query.events(
+			{
+				where: {
+					AND: [
+						{
+							user: { id: userId }
+						},
+						{
+							id: eventId
+						}
+					]
+				}
+			},
+			"{ id }"
+		);
+		if (userPost.length === 0) {
+			throw new Error("you can only edit your own events");
+		}
+
+		return prisma.mutation.updateEvent(
+			{
+				where: { id: eventId },
+				data: { ...data }
+			},
+			info
+		);
 	}
 };

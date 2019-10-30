@@ -43,6 +43,13 @@ input BookingInput {
 	eventId: ID!
 }
 
+input UpdateEventInput {
+	title: String
+	description: String
+	price: Float
+	date: String
+}
+
 type Query {
 	events: [Event!]!
 	users: [User!]!
@@ -55,4 +62,5 @@ type Mutation {
 	createUser(data: UserInput!): User!
 	bookEvent(data: BookingInput!): Booking!
 	cancelBooking(bookId: ID!): Booking!
+	updateEvent(eventId: ID!, data: UpdateEventInput!): Event!
 }

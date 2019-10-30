@@ -22,7 +22,7 @@
 	import CreateEventModal from "../components/Event/CreateEventModal/CreateEventModal";
 	import UpdateEventModal from "../components/Event/UpdateEventModal/UpdateEventModal";
 
-	import { mapState } from "vuex";
+	import { mapState,mapGetters } from "vuex";
 
 	export default {
 		components: {
@@ -32,7 +32,8 @@
 			"app-update-event-modal": UpdateEventModal
 		},
 		computed: {
-			...mapState(["isAuth", "events", "selectedEvent", "loading"])
+			...mapState(["isAuth", "events", "selectedEvent", "loading"]),
+			...mapGetters(['updatedEvents'])
 		},
 		methods: {
 			showCreateEventModal() {

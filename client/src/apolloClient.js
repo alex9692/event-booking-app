@@ -4,11 +4,19 @@ import { ApolloClient } from "apollo-client";
 import { createHttpLink } from "apollo-link-http";
 import { InMemoryCache } from "apollo-cache-inmemory";
 import { onError } from "apollo-link-error";
+import { RetryLink } from "apollo-link-retry";
+import { ApolloLink } from "apollo-link";
 
 const httpLink = createHttpLink({
 	uri: "http://localhost:3333"
 });
-
+const retryLink = new RetryLink({
+	attempts: { max: 5 },
+	delay: {
+		initial: 300,
+		max: Infinity
+	}
+});
 const errorLink = onError(({ graphQLErrors, networkError }) => {
 	if (graphQLErrors)
 		graphQLErrors.map(({ message, locations, path }) =>
@@ -22,7 +30,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 const cache = new InMemoryCache();
 
 export const apolloClient = new ApolloClient({
-	link: errorLink.concat(httpLink),
+	link: ApolloLink.from([httpLink, errorLink, retryLink]),
 	cache,
 	connectToDevTools: true,
 	defaultOptions: {

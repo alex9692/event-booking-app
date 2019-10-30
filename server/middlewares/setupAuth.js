@@ -4,7 +4,8 @@ export const auth = {
 	Mutation: {
 		createEvent: authMiddleware,
 		bookEvent: authMiddleware,
-		cancelBooking: authMiddleware
+		cancelBooking: authMiddleware,
+		updateEvent: authMiddleware
 	},
 	Query: {
 		bookings: authMiddleware
