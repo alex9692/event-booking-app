@@ -2,11 +2,13 @@
 	<b-card no-body class="mb-3 p-2" border-variant="primary">
 		<b-row align-h="between">
 			<b-col cols="auto" class="mr-auto">
-				<b-card-text class="mt-2">{{booking.event.title}} - {{new Date(booking.createdAt).toLocaleDateString('en-US')}}</b-card-text>
+				<b-card-text
+					class="mt-2"
+				>{{booking.event.title}} - {{new Date(booking.createdAt).toLocaleDateString('en-US')}}</b-card-text>
 			</b-col>
 			<b-col cols="auto">
-				<b-button variant="outline-primary" class="py-1 px-3" @click="cancelBooking">
-					<v-icon class="delete-icon" name="minus-circle"></v-icon>
+				<b-button variant="outline-light" class="py-1 px-2 mr-2" @click="cancelBooking">
+					<v-icon class="delete-icon" name="x-circle"></v-icon>
 				</b-button>
 			</b-col>
 		</b-row>
@@ -30,10 +32,16 @@
 	.delete-icon {
 		width: 1.5rem;
 		cursor: pointer;
-		color: #0069d9;
+		color: #007bff;
 		transition: color 200ms;
+		transition: transform 200ms;
 	}
 	.btn:hover .delete-icon {
-		color: #fff;
+		color: #0069d9;
+		transform: rotateZ(90deg);
+	}
+	.btn-outline-light:hover {
+		background-color: #fff;
+		border-color: #fff;
 	}
 </style>

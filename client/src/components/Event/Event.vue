@@ -7,18 +7,21 @@
 			</div>
 			<small class="mt-2">
 				<div v-if="userId === event.user.id">
-					<span v-if="updateLoading && selectedEvent.id === event.id" >
+					<span v-if="updateLoading && selectedEvent.id === event.id">
 						<b-spinner variant="primary" label="Spinning"></b-spinner>
 					</span>
 					<span v-else>
 						You are owner of this event.
 						<b-button variant="outline-primary" class="py-1 px-3" @click="updateEvent">
 							Edit
-							<v-icon name="edit" class="mb-2 edit-icon"></v-icon>
+							<v-icon name="edit" class="mb-1 edit-icon"></v-icon>
 						</b-button>
 					</span>
 				</div>
-				<b-button v-if="userId !== event.user.id" variant="primary" @click="showDetails">View Details</b-button>
+				<b-button v-if="userId !== event.user.id" variant="primary" @click="showDetails">
+					View Details
+					<v-icon name="external-link" class="mb-1 eye-icon"></v-icon>
+				</b-button>
 			</small>
 		</div>
 	</b-card>
@@ -56,6 +59,16 @@
 		transition: color 200ms;
 	}
 	.btn:hover .edit-icon {
+		color: #fff;
+	}
+	.eye-icon {
+		width: 1.2rem;
+		height: 1.2rem;
+		cursor: pointer;
+		color: #fff;
+		transition: color 200ms;
+	}
+	.btn:hover .eye-icon {
 		color: #fff;
 	}
 </style>

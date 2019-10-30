@@ -3,7 +3,12 @@
 		<b-row>
 			<b-col cols="6" offset-md="3">
 				<b-form @submit.prevent="onSubmit">
-					<h1 class="display-4 mb-3">{{ isLogin ? 'Sign in:' : 'Sign up:' }}</h1>
+					<h1 class="display-4 mb-3 text-center">
+						<p>
+							<v-icon :name="isLogin ? 'user' :'user-plus'" class="user-icon"></v-icon>
+						</p>
+						{{ isLogin ? 'Sign in' : 'Sign up' }}
+					</h1>
 					<hr />
 					<b-form-group id="input-group-1" label-for="email" label="E-Mail">
 						<b-form-input id="email" type="email" placeholder="Enter your email address" v-model="email"></b-form-input>
@@ -61,3 +66,10 @@
 		}
 	};
 </script>
+
+<style scoped>
+	.user-icon {
+		width: 10rem;
+		height: 10rem;
+	}
+</style>

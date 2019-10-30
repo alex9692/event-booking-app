@@ -3,7 +3,8 @@
 		<b-row v-if="isAuth">
 			<b-col cols="4" offset-md="4">
 				<b-card class="text-center" border-variant="primary">
-					<b-card-text class="mt-5 mb-3">Share your own events!</b-card-text>
+					<v-icon class="clipboard-icon" name="share"></v-icon>
+					<b-card-text class="mt-3 mb-3">Share your own events!</b-card-text>
 					<b-button variant="primary" id="show-btn" @click="showCreateEventModal">Create Event</b-button>
 				</b-card>
 			</b-col>
@@ -41,3 +42,11 @@
 		}
 	};
 </script>
+
+<style scoped>
+	.clipboard-icon {
+		width: 2.5rem;
+		height: 2.5rem;
+		color: #007bff;
+	}
+</style>
